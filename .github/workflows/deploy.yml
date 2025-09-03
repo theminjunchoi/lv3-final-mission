@@ -68,7 +68,11 @@ jobs:
         export JWT_SECRET=WX1GYj5fM0dAWiE7PUE5JlV1UExyRTcqNF5xS35YVHNkUUp2TmZoY01Cb0lXMitMeCNDbjh5VnowSHdSdCVn
         export RANDOMMER_SECRET=b3dad28cde3e4ce1853a8c5bdc8438ab
         
-        nohup java -jar -Dspring.profiles.active=dev build/libs/*.jar > app.log 2>&1 &
+        # bootJar로 생성된 실행 가능한 JAR 파일 찾기
+        JAR_FILE=$(find build/libs -name "*-SNAPSHOT.jar" ! -name "*-plain.jar" | head -1)
+        echo "Starting JAR: $JAR_FILE"
+        
+        nohup java -jar -Dspring.profiles.active=dev "$JAR_FILE" > app.log 2>&1 &
         echo "Application started in background"
         sleep 15
     

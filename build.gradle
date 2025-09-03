@@ -46,3 +46,11 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    enabled = true
+}
