@@ -41,7 +41,9 @@ jobs:
     
     - name: Build with Gradle
       run: |
-        ./gradlew clean build -x test
+        # 메모리 부족 방지
+        export GRADLE_OPTS="-Xmx512m -XX:MaxMetaspaceSize=256m"
+        ./gradlew clean build -x test --no-daemon --max-workers=1
         echo "Build completed!"
     
     - name: Set environment variables
