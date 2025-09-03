@@ -64,6 +64,7 @@ jobs:
     - name: Start application (dev)
       if: env.USE_DOCKER == 'true'
       run: |
+        # 환경변수 설정
         export SPRING_PROFILES_ACTIVE=dev
         export DB_HOST=localhost
         export DB_PORT=3306
@@ -73,12 +74,24 @@ jobs:
         export JWT_SECRET=WX1GYj5fM0dAWiE7PUE5JlV1UExyRTcqNF5xS35YVHNkUUp2TmZoY01Cb0lXMitMeCNDbjh5VnowSHdSdCVn
         export RANDOMMER_SECRET=b3dad28cde3e4ce1853a8c5bdc8438ab
         
+        # JAR 파일 찾기
         JAR_FILE=$(find build/libs -name "*-SNAPSHOT.jar" ! -name "*-plain.jar" | head -1)
-        echo "Starting DEV JAR: $JAR_FILE"
+        JAR_FULL_PATH=$(realpath "$JAR_FILE")
+        echo "Starting DEV JAR: $JAR_FULL_PATH"
         
-        nohup java -jar -Dspring.profiles.active=dev "$JAR_FILE" > app-dev.log 2>&1 &
-        echo "DEV application started"
-        sleep 15
+        # 홈 디렉토리에서 실행하여 권한 문제 방지
+        cd ~
+        
+        # disown을 사용하여 프로세스를 완전히 분리
+        nohup java -jar \
+          -Dspring.profiles.active=dev \
+          -Xms256m -Xmx512m \
+          "$JAR_FULL_PATH" > app-dev.log 2>&1 < /dev/null &
+        
+        JAVA_PID=$!
+        disown $JAVA_PID
+        echo "DEV application started with PID: $JAVA_PID"
+        sleep 20
     
     - name: Start application (prod)
       if: env.USE_DOCKER == 'false'
