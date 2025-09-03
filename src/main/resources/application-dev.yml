@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:mj_dev}?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:devpassword}
+    
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+
+  h2:
+    console:
+      enabled: false
+
+  sql:
+    init:
+      mode: never
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET:WX1GYj5fM0dAWiE7PUE5JlV1UExyRTcqNF5xS35YVHNkUUp2TmZoY01Cb0lXMitMeCNDbjh5VnowSHdSdCVn}
+      access:
+        expire-length: 3600000  # 1시간
+
+alias:
+  randommer:
+    base-url: https://randommer.io/api/
+    connection-timeout: 5000
+    read-timeout: 5000
+    secret-key: ${RANDOMMER_SECRET:b3dad28cde3e4ce1853a8c5bdc8438ab}
+
+logging:
+  level:
+    root: INFO
+    nextstep: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+server:
+  port: 8080

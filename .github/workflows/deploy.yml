@@ -1,0 +1,80 @@
+name: Deploy Spring Boot to EC2
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Checkout dev branch
+      uses: actions/checkout@v4
+      with:
+        ref: dev
+    
+    - name: Setup Java JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Stop existing application
+      run: |
+        pkill -f "java.*spring.profiles.active=dev" || echo "No existing process found"
+        sleep 5
+    
+    - name: Start MySQL container
+      run: |
+        # Docker Compose로 MySQL 컨테이너 시작
+        docker-compose down || true
+        docker-compose up -d mysql
+        
+        # MySQL 시작 대기
+        echo "Waiting for MySQL to be ready..."
+        timeout 60 bash -c 'until docker-compose exec -T mysql mysqladmin ping -h localhost --silent; do sleep 2; done'
+        echo "MySQL is ready!"
+    
+    - name: Build with Gradle
+      run: |
+        ./gradlew clean build -x test
+        echo "Build completed!"
+    
+    - name: Set environment variables
+      run: |
+        export SPRING_PROFILES_ACTIVE=dev
+        export DB_HOST=localhost
+        export DB_PORT=3306
+        export DB_NAME=mj_dev
+        export DB_USER=admin
+        export DB_PASSWORD=devpassword
+        export JWT_SECRET=WX1GYj5fM0dAWiE7PUE5JlV1UExyRTcqNF5xS35YVHNkUUp2TmZoY01Cb0lXMitMeCNDbjh5VnowSHdSdCVn
+        export RANDOMMER_SECRET=b3dad28cde3e4ce1853a8c5bdc8438ab
+    
+    - name: Start application
+      run: |
+        export SPRING_PROFILES_ACTIVE=dev
+        export DB_HOST=localhost
+        export DB_PORT=3306
+        export DB_NAME=mj_dev
+        export DB_USER=admin
+        export DB_PASSWORD=devpassword
+        export JWT_SECRET=WX1GYj5fM0dAWiE7PUE5JlV1UExyRTcqNF5xS35YVHNkUUp2TmZoY01Cb0lXMitMeCNDbjh5VnowSHdSdCVn
+        export RANDOMMER_SECRET=b3dad28cde3e4ce1853a8c5bdc8438ab
+        
+        nohup java -jar -Dspring.profiles.active=dev build/libs/*.jar > app.log 2>&1 &
+        echo "Application started in background"
+        sleep 15
+    
+    - name: Health check
+      run: |
+        timeout 30 bash -c 'until curl -f http://localhost:8080/actuator/health || curl -f http://localhost:8080; do sleep 2; done' || {
+          echo "Health check failed. Checking logs..."
+          tail -n 50 app.log
+          exit 1
+        }
+        echo "Application is running successfully!"
