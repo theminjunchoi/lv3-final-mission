@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="shh.reservation.ui.ReservationApiTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-09-03T03:43:16.209Z" hostname="choeminjun-ui-MacBookPro.local" time="2.522">
+  <properties/>
+  <testcase name="예약을_추가한다()" classname="shh.reservation.ui.ReservationApiTest" time="1.56"/>
+  <testcase name="stallId로_예약을_조회한다()" classname="shh.reservation.ui.ReservationApiTest" time="0.362"/>
+  <testcase name="본인의_예약을_수정한다()" classname="shh.reservation.ui.ReservationApiTest" time="0.222"/>
+  <testcase name="본인의_예약을_제거한다()" classname="shh.reservation.ui.ReservationApiTest" time="0.206"/>
+  <testcase name="본인의_예약을_조회한다()" classname="shh.reservation.ui.ReservationApiTest" time="0.168"/>
+  <system-out><![CDATA[2025-09-03T12:43:16.203+09:00  INFO 92707 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [shh.reservation.ui.ReservationApiTest]: ReservationApiTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-09-03T12:43:16.207+09:00  INFO 92707 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration shh.shhApplication for test class shh.reservation.ui.ReservationApiTest
+2025-09-03T12:43:16.210+09:00  INFO 92707 --- [    Test worker] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-03T12:43:16.211+09:00  INFO 92707 --- [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-03T12:43:16.213+09:00  INFO 92707 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-03T12:43:16.215+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2025-09-03T12:43:16.215+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.4)
+
+2025-09-03T12:43:16.227+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : Starting ReservationApiTest using Java 21.0.5 with PID 92707 (started by choiminjun in /Users/choiminjun/woowa/lv2-final-mission)
+2025-09-03T12:43:16.227+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : The following 1 profile is active: "test"
+2025-09-03T12:43:16.266+09:00  INFO 92707 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-03T12:43:16.270+09:00  INFO 92707 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 4 JPA repository interfaces.
+2025-09-03T12:43:16.288+09:00  INFO 92707 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2025-09-03T12:43:16.289+09:00  INFO 92707 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-03T12:43:16.289+09:00  INFO 92707 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-09-03T12:43:16.295+09:00  INFO 92707 --- [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-03T12:43:16.295+09:00  INFO 92707 --- [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 67 ms
+2025-09-03T12:43:16.306+09:00  INFO 92707 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-03T12:43:16.307+09:00  INFO 92707 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-03T12:43:16.315+09:00  INFO 92707 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-03T12:43:16.316+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2025-09-03T12:43:16.317+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:database user=SA
+2025-09-03T12:43:16.317+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2025-09-03T12:43:16.318+09:00  INFO 92707 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-03T12:43:16.346+09:00  INFO 92707 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-03T12:43:16.349+09:00  INFO 92707 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-03T12:43:16.367+09:00  WARN 92707 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-03T12:43:16.384+09:00  WARN 92707 --- [    Test worker] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-09-03T12:43:16.388+09:00  INFO 92707 --- [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:database'
+2025-09-03T12:43:16.398+09:00  INFO 92707 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 55867 (http) with context path '/'
+2025-09-03T12:43:16.399+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : Started ReservationApiTest in 0.182 seconds (process running for 2.963)
+Request method:	POST
+Request URI:	http://localhost:55867/login
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		<none>
+Multiparts:		<none>
+Body:
+{
+    "email": "test1@email.com",
+    "password": "1234"
+}
+2025-09-03T12:43:16.406+09:00  INFO 92707 --- [o-auto-3-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-03T12:43:16.407+09:00  INFO 92707 --- [o-auto-3-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-03T12:43:16.407+09:00  INFO 92707 --- [o-auto-3-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+HTTP/1.1 200 
+Set-Cookie: token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc1Njg3MDk5NiwiZXhwIjoxNzU2ODcxNTk2fQ.ABGqpbQQFWyxibY3aNVmWGu9slqxcyhTLpbUBXw9AoQ; Max-Age=600000; Expires=Wed, 10 Sep 2025 02:23:16 GMT
+Content-Length: 0
+Date: Wed, 03 Sep 2025 03:43:16 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Request method:	POST
+Request URI:	http://localhost:55867/reservations
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc1Njg3MDk5NiwiZXhwIjoxNzU2ODcxNTk2fQ.ABGqpbQQFWyxibY3aNVmWGu9slqxcyhTLpbUBXw9AoQ
+Multiparts:		<none>
+Body:
+{
+    "date": [
+        2025,
+        9,
+        4
+    ],
+    "timeId": 1,
+    "stallId": 1
+}
+HTTP/1.1 201 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 03 Sep 2025 03:43:17 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+
+{
+    "id": 5,
+    "date": "2025-09-04",
+    "time": {
+        "id": 1,
+        "startAt": "10:00:00"
+    },
+    "stall": {
+        "id": 1,
+        "name": "명상의 방"
+    },
+    "member": {
+        "id": 1,
+        "name": "엠제이"
+    },
+    "alias": "Valery"
+}
+2025-09-03T12:43:17.770+09:00  INFO 92707 --- [    Test worker] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-03T12:43:17.772+09:00  INFO 92707 --- [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-03T12:43:17.773+09:00  INFO 92707 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-03T12:43:17.774+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2025-09-03T12:43:17.775+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.4)
+
+2025-09-03T12:43:17.786+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : Starting ReservationApiTest using Java 21.0.5 with PID 92707 (started by choiminjun in /Users/choiminjun/woowa/lv2-final-mission)
+2025-09-03T12:43:17.786+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : The following 1 profile is active: "test"
+2025-09-03T12:43:17.820+09:00  INFO 92707 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-03T12:43:17.824+09:00  INFO 92707 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 4 JPA repository interfaces.
+2025-09-03T12:43:17.840+09:00  INFO 92707 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2025-09-03T12:43:17.841+09:00  INFO 92707 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-03T12:43:17.841+09:00  INFO 92707 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-09-03T12:43:17.846+09:00  INFO 92707 --- [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-03T12:43:17.846+09:00  INFO 92707 --- [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 59 ms
+2025-09-03T12:43:17.854+09:00  INFO 92707 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-03T12:43:17.855+09:00  INFO 92707 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-03T12:43:17.858+09:00  INFO 92707 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-03T12:43:17.858+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2025-09-03T12:43:17.859+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection conn30: url=jdbc:h2:mem:database user=SA
+2025-09-03T12:43:17.859+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2025-09-03T12:43:17.859+09:00  INFO 92707 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-4)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-03T12:43:17.882+09:00  INFO 92707 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-03T12:43:17.885+09:00  INFO 92707 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-03T12:43:17.901+09:00  WARN 92707 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-03T12:43:17.916+09:00  WARN 92707 --- [    Test worker] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-09-03T12:43:17.919+09:00  INFO 92707 --- [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:database'
+2025-09-03T12:43:17.929+09:00  INFO 92707 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 55872 (http) with context path '/'
+2025-09-03T12:43:17.930+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : Started ReservationApiTest in 0.154 seconds (process running for 4.493)
+Request method:	POST
+Request URI:	http://localhost:55872/login
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		<none>
+Multiparts:		<none>
+Body:
+{
+    "email": "test1@email.com",
+    "password": "1234"
+}
+2025-09-03T12:43:17.936+09:00  INFO 92707 --- [o-auto-4-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-03T12:43:17.936+09:00  INFO 92707 --- [o-auto-4-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-03T12:43:17.937+09:00  INFO 92707 --- [o-auto-4-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+HTTP/1.1 200 
+Set-Cookie: token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc1Njg3MDk5NywiZXhwIjoxNzU2ODcxNTk3fQ.TdHr6m7SpOAHet0I_ZtJVTLwWiMx_eaecuFVcKGE-9Y; Max-Age=600000; Expires=Wed, 10 Sep 2025 02:23:17 GMT
+Content-Length: 0
+Date: Wed, 03 Sep 2025 03:43:17 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Request method:	GET
+Request URI:	http://localhost:55872/reservations/2
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc1Njg3MDk5NywiZXhwIjoxNzU2ODcxNTk3fQ.TdHr6m7SpOAHet0I_ZtJVTLwWiMx_eaecuFVcKGE-9Y
+Multiparts:		<none>
+Body:			<none>
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 03 Sep 2025 03:43:17 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+
+[
+    {
+        "id": 1,
+        "date": "2025-09-03",
+        "time": {
+            "id": 1,
+            "startAt": "10:00:00"
+        },
+        "stall": {
+            "id": 2,
+            "name": "소화의 방"
+        },
+        "member": {
+            "id": 1,
+            "name": "엠제이"
+        },
+        "alias": "Roy"
+    },
+    {
+        "id": 2,
+        "date": "2025-09-03",
+        "time": {
+            "id": 2,
+            "startAt": "10:15:00"
+        },
+        "stall": {
+            "id": 2,
+            "name": "소화의 방"
+        },
+        "member": {
+            "id": 1,
+            "name": "엠제이"
+        },
+        "alias": "Thomas"
+    },
+    {
+        "id": 3,
+        "date": "2025-09-03",
+        "time": {
+            "id": 3,
+            "startAt": "10:30:00"
+        },
+        "stall": {
+            "id": 2,
+            "name": "소화의 방"
+        },
+        "member": {
+            "id": 1,
+            "name": "엠제이"
+        },
+        "alias": "Ben"
+    },
+    {
+        "id": 4,
+        "date": "2025-09-03",
+        "time": {
+            "id": 4,
+            "startAt": "10:45:00"
+        },
+        "stall": {
+            "id": 2,
+            "name": "소화의 방"
+        },
+        "member": {
+            "id": 1,
+            "name": "엠제이"
+        },
+        "alias": "Heather"
+    }
+]
+2025-09-03T12:43:18.134+09:00  INFO 92707 --- [    Test worker] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-03T12:43:18.135+09:00  INFO 92707 --- [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-03T12:43:18.136+09:00  INFO 92707 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-03T12:43:18.137+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown initiated...
+2025-09-03T12:43:18.170+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.4)
+
+2025-09-03T12:43:18.180+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : Starting ReservationApiTest using Java 21.0.5 with PID 92707 (started by choiminjun in /Users/choiminjun/woowa/lv2-final-mission)
+2025-09-03T12:43:18.181+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : The following 1 profile is active: "test"
+2025-09-03T12:43:18.213+09:00  INFO 92707 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-03T12:43:18.217+09:00  INFO 92707 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 4 JPA repository interfaces.
+2025-09-03T12:43:18.234+09:00  INFO 92707 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2025-09-03T12:43:18.234+09:00  INFO 92707 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-03T12:43:18.234+09:00  INFO 92707 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-09-03T12:43:18.240+09:00  INFO 92707 --- [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-03T12:43:18.240+09:00  INFO 92707 --- [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 59 ms
+2025-09-03T12:43:18.247+09:00  INFO 92707 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-03T12:43:18.248+09:00  INFO 92707 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-03T12:43:18.251+09:00  INFO 92707 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-03T12:43:18.251+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Starting...
+2025-09-03T12:43:18.251+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Added connection conn37: url=jdbc:h2:mem:database user=SA
+2025-09-03T12:43:18.252+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Start completed.
+2025-09-03T12:43:18.252+09:00  INFO 92707 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-5)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-03T12:43:18.279+09:00  INFO 92707 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-03T12:43:18.282+09:00  INFO 92707 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-03T12:43:18.299+09:00  WARN 92707 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-03T12:43:18.313+09:00  WARN 92707 --- [    Test worker] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-09-03T12:43:18.317+09:00  INFO 92707 --- [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:database'
+2025-09-03T12:43:18.326+09:00  INFO 92707 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 55876 (http) with context path '/'
+2025-09-03T12:43:18.328+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : Started ReservationApiTest in 0.156 seconds (process running for 4.892)
+Request method:	POST
+Request URI:	http://localhost:55876/login
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		<none>
+Multiparts:		<none>
+Body:
+{
+    "email": "test1@email.com",
+    "password": "1234"
+}
+2025-09-03T12:43:18.335+09:00  INFO 92707 --- [o-auto-5-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-03T12:43:18.335+09:00  INFO 92707 --- [o-auto-5-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-03T12:43:18.335+09:00  INFO 92707 --- [o-auto-5-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+HTTP/1.1 200 
+Set-Cookie: token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc1Njg3MDk5OCwiZXhwIjoxNzU2ODcxNTk4fQ.E14EyNXzZHFnOX269rHSf9cNAoo8CL7imYA4oHQgSLU; Max-Age=600000; Expires=Wed, 10 Sep 2025 02:23:18 GMT
+Content-Length: 0
+Date: Wed, 03 Sep 2025 03:43:18 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Request method:	PUT
+Request URI:	http://localhost:55876/reservations/1
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc1Njg3MDk5OCwiZXhwIjoxNzU2ODcxNTk4fQ.E14EyNXzZHFnOX269rHSf9cNAoo8CL7imYA4oHQgSLU
+Multiparts:		<none>
+Body:
+{
+    "date": [
+        2025,
+        9,
+        3
+    ],
+    "time": {
+        "id": 5,
+        "startAt": [
+            11,
+            0
+        ]
+    }
+}
+HTTP/1.1 200 
+Content-Length: 0
+Date: Wed, 03 Sep 2025 03:43:18 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+2025-09-03T12:43:18.357+09:00  INFO 92707 --- [    Test worker] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-03T12:43:18.358+09:00  INFO 92707 --- [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-03T12:43:18.359+09:00  INFO 92707 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-03T12:43:18.359+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown initiated...
+2025-09-03T12:43:18.392+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.4)
+
+2025-09-03T12:43:18.401+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : Starting ReservationApiTest using Java 21.0.5 with PID 92707 (started by choiminjun in /Users/choiminjun/woowa/lv2-final-mission)
+2025-09-03T12:43:18.401+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : The following 1 profile is active: "test"
+2025-09-03T12:43:18.433+09:00  INFO 92707 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-03T12:43:18.437+09:00  INFO 92707 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 4 JPA repository interfaces.
+2025-09-03T12:43:18.452+09:00  INFO 92707 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2025-09-03T12:43:18.452+09:00  INFO 92707 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-03T12:43:18.452+09:00  INFO 92707 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-09-03T12:43:18.457+09:00  INFO 92707 --- [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-03T12:43:18.457+09:00  INFO 92707 --- [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 56 ms
+2025-09-03T12:43:18.465+09:00  INFO 92707 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-03T12:43:18.465+09:00  INFO 92707 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-03T12:43:18.468+09:00  INFO 92707 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-03T12:43:18.468+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Starting...
+2025-09-03T12:43:18.469+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-6 - Added connection conn39: url=jdbc:h2:mem:database user=SA
+2025-09-03T12:43:18.469+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Start completed.
+2025-09-03T12:43:18.469+09:00  INFO 92707 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-6)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-03T12:43:18.493+09:00  INFO 92707 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-03T12:43:18.497+09:00  INFO 92707 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-03T12:43:18.512+09:00  WARN 92707 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-03T12:43:18.525+09:00  WARN 92707 --- [    Test worker] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-09-03T12:43:18.530+09:00  INFO 92707 --- [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:database'
+2025-09-03T12:43:18.538+09:00  INFO 92707 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 55880 (http) with context path '/'
+2025-09-03T12:43:18.539+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : Started ReservationApiTest in 0.145 seconds (process running for 5.103)
+Request method:	POST
+Request URI:	http://localhost:55880/login
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		<none>
+Multiparts:		<none>
+Body:
+{
+    "email": "test1@email.com",
+    "password": "1234"
+}
+2025-09-03T12:43:18.545+09:00  INFO 92707 --- [o-auto-6-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-03T12:43:18.545+09:00  INFO 92707 --- [o-auto-6-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-03T12:43:18.545+09:00  INFO 92707 --- [o-auto-6-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+HTTP/1.1 200 
+Set-Cookie: token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc1Njg3MDk5OCwiZXhwIjoxNzU2ODcxNTk4fQ.E14EyNXzZHFnOX269rHSf9cNAoo8CL7imYA4oHQgSLU; Max-Age=600000; Expires=Wed, 10 Sep 2025 02:23:18 GMT
+Content-Length: 0
+Date: Wed, 03 Sep 2025 03:43:18 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Request method:	DELETE
+Request URI:	http://localhost:55880/reservations/1
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc1Njg3MDk5OCwiZXhwIjoxNzU2ODcxNTk4fQ.E14EyNXzZHFnOX269rHSf9cNAoo8CL7imYA4oHQgSLU
+Multiparts:		<none>
+Body:			<none>
+HTTP/1.1 204 
+Date: Wed, 03 Sep 2025 03:43:18 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+2025-09-03T12:43:18.564+09:00  INFO 92707 --- [    Test worker] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-03T12:43:18.565+09:00  INFO 92707 --- [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-03T12:43:18.565+09:00  INFO 92707 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-03T12:43:18.566+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown initiated...
+2025-09-03T12:43:18.566+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.4)
+
+2025-09-03T12:43:18.574+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : Starting ReservationApiTest using Java 21.0.5 with PID 92707 (started by choiminjun in /Users/choiminjun/woowa/lv2-final-mission)
+2025-09-03T12:43:18.574+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : The following 1 profile is active: "test"
+2025-09-03T12:43:18.598+09:00  INFO 92707 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-03T12:43:18.602+09:00  INFO 92707 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 4 JPA repository interfaces.
+2025-09-03T12:43:18.616+09:00  INFO 92707 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2025-09-03T12:43:18.616+09:00  INFO 92707 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-03T12:43:18.616+09:00  INFO 92707 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-09-03T12:43:18.622+09:00  INFO 92707 --- [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-03T12:43:18.622+09:00  INFO 92707 --- [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 48 ms
+2025-09-03T12:43:18.629+09:00  INFO 92707 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-03T12:43:18.630+09:00  INFO 92707 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-03T12:43:18.632+09:00  INFO 92707 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-03T12:43:18.632+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Starting...
+2025-09-03T12:43:18.633+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-7 - Added connection conn40: url=jdbc:h2:mem:database user=SA
+2025-09-03T12:43:18.633+09:00  INFO 92707 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Start completed.
+2025-09-03T12:43:18.634+09:00  INFO 92707 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-7)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-03T12:43:18.655+09:00  INFO 92707 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-03T12:43:18.657+09:00  INFO 92707 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-03T12:43:18.673+09:00  WARN 92707 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-03T12:43:18.685+09:00  WARN 92707 --- [    Test worker] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-09-03T12:43:18.690+09:00  INFO 92707 --- [    Test worker] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:database'
+2025-09-03T12:43:18.700+09:00  INFO 92707 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 55884 (http) with context path '/'
+2025-09-03T12:43:18.701+09:00  INFO 92707 --- [    Test worker] shh.reservation.ui.ReservationApiTest    : Started ReservationApiTest in 0.133 seconds (process running for 5.264)
+Request method:	POST
+Request URI:	http://localhost:55884/login
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		<none>
+Multiparts:		<none>
+Body:
+{
+    "email": "test1@email.com",
+    "password": "1234"
+}
+2025-09-03T12:43:18.706+09:00  INFO 92707 --- [o-auto-7-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-03T12:43:18.706+09:00  INFO 92707 --- [o-auto-7-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-03T12:43:18.707+09:00  INFO 92707 --- [o-auto-7-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+HTTP/1.1 200 
+Set-Cookie: token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc1Njg3MDk5OCwiZXhwIjoxNzU2ODcxNTk4fQ.E14EyNXzZHFnOX269rHSf9cNAoo8CL7imYA4oHQgSLU; Max-Age=600000; Expires=Wed, 10 Sep 2025 02:23:18 GMT
+Content-Length: 0
+Date: Wed, 03 Sep 2025 03:43:18 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Request method:	GET
+Request URI:	http://localhost:55884/mine
+Proxy:			<none>
+Request params:	<none>
+Query params:	<none>
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwicm9sZSI6Ik1FTUJFUiIsImlhdCI6MTc1Njg3MDk5OCwiZXhwIjoxNzU2ODcxNTk4fQ.E14EyNXzZHFnOX269rHSf9cNAoo8CL7imYA4oHQgSLU
+Multiparts:		<none>
+Body:			<none>
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 03 Sep 2025 03:43:18 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+
+[
+    {
+        "id": 1,
+        "date": "2025-09-03",
+        "time": {
+            "id": 1,
+            "startAt": "10:00:00"
+        },
+        "stall": {
+            "id": 2,
+            "name": "소화의 방"
+        },
+        "member": {
+            "id": 1,
+            "name": "엠제이"
+        },
+        "alias": "Roy"
+    },
+    {
+        "id": 2,
+        "date": "2025-09-03",
+        "time": {
+            "id": 2,
+            "startAt": "10:15:00"
+        },
+        "stall": {
+            "id": 2,
+            "name": "소화의 방"
+        },
+        "member": {
+            "id": 1,
+            "name": "엠제이"
+        },
+        "alias": "Thomas"
+    },
+    {
+        "id": 3,
+        "date": "2025-09-03",
+        "time": {
+            "id": 3,
+            "startAt": "10:30:00"
+        },
+        "stall": {
+            "id": 2,
+            "name": "소화의 방"
+        },
+        "member": {
+            "id": 1,
+            "name": "엠제이"
+        },
+        "alias": "Ben"
+    },
+    {
+        "id": 4,
+        "date": "2025-09-03",
+        "time": {
+            "id": 4,
+            "startAt": "10:45:00"
+        },
+        "stall": {
+            "id": 2,
+            "name": "소화의 방"
+        },
+        "member": {
+            "id": 1,
+            "name": "엠제이"
+        },
+        "alias": "Heather"
+    }
+]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
