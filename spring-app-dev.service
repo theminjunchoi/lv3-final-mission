@@ -1,0 +1,30 @@
+[Unit]
+Description=Spring Boot Dev Application
+After=network.target
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=ec2-user
+Group=ec2-user
+WorkingDirectory=/home/ec2-user
+
+Environment="SPRING_PROFILES_ACTIVE=dev"
+Environment="DB_HOST=localhost"
+Environment="DB_PORT=3306"
+Environment="DB_NAME=mj_dev"
+Environment="DB_USER=admin"
+Environment="DB_PASSWORD=devpassword"
+Environment="JWT_SECRET=WX1GYj5fM0dAWiE7PUE5JlV1UExyRTcqNF5xS35YVHNkUUp2TmZoY01Cb0lXMitMeCNDbjh5VnowSHdSdCVn"
+Environment="RANDOMMER_SECRET=b3dad28cde3e4ce1853a8c5bdc8438ab"
+
+ExecStart=/usr/bin/java -jar /home/ec2-user/actions-runner/_work/lv3-final-mission/lv3-final-mission/build/libs/lv2-final-mission-0.0.1-SNAPSHOT.jar
+
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

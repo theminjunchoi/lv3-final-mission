@@ -64,33 +64,24 @@ jobs:
     - name: Start application (dev)
       if: env.USE_DOCKER == 'true'
       run: |
-        # 환경변수 설정
-        export SPRING_PROFILES_ACTIVE=dev
-        export DB_HOST=localhost
-        export DB_PORT=3306
-        export DB_NAME=mj_dev
-        export DB_USER=admin
-        export DB_PASSWORD=devpassword
-        export JWT_SECRET=WX1GYj5fM0dAWiE7PUE5JlV1UExyRTcqNF5xS35YVHNkUUp2TmZoY01Cb0lXMitMeCNDbjh5VnowSHdSdCVn
-        export RANDOMMER_SECRET=b3dad28cde3e4ce1853a8c5bdc8438ab
-        
-        # JAR 파일 찾기
+        # JAR 파일을 고정 위치로 복사
         JAR_FILE=$(find build/libs -name "*-SNAPSHOT.jar" ! -name "*-plain.jar" | head -1)
-        JAR_FULL_PATH=$(realpath "$JAR_FILE")
-        echo "Starting DEV JAR: $JAR_FULL_PATH"
+        cp "$JAR_FILE" ~/current-app.jar
         
-        # 홈 디렉토리에서 실행하여 권한 문제 방지
-        cd ~
+        # systemd 서비스 파일이 있는지 확인하고 설치
+        if [ ! -f /etc/systemd/system/spring-app-dev.service ]; then
+          sudo cp spring-app-dev.service /etc/systemd/system/
+          sudo systemctl daemon-reload
+          sudo systemctl enable spring-app-dev
+        fi
         
-        # disown을 사용하여 프로세스를 완전히 분리
-        nohup java -jar \
-          -Dspring.profiles.active=dev \
-          -Xms256m -Xmx512m \
-          "$JAR_FULL_PATH" > app-dev.log 2>&1 < /dev/null &
+        # JAR 경로 업데이트된 서비스 파일로 교체
+        sudo sed -i 's|ExecStart=.*|ExecStart=/usr/bin/java -jar /home/ec2-user/current-app.jar|' /etc/systemd/system/spring-app-dev.service
+        sudo systemctl daemon-reload
         
-        JAVA_PID=$!
-        disown $JAVA_PID
-        echo "DEV application started with PID: $JAVA_PID"
+        # 서비스 재시작
+        sudo systemctl restart spring-app-dev
+        echo "DEV application started as systemd service"
         sleep 20
     
     - name: Start application (prod)
@@ -121,9 +112,17 @@ jobs:
     - name: Health check
       run: |
         for i in {1..12}; do
-          if pgrep -f "java.*spring.profiles.active=${{ env.SPRING_PROFILE }}" > /dev/null; then
-            echo "${{ env.ENVIRONMENT }} application is running!"
-            exit 0
+          if [[ "${{ env.USE_DOCKER }}" == "true" ]]; then
+            # systemd 서비스 상태 확인
+            if sudo systemctl is-active --quiet spring-app-dev; then
+              echo "${{ env.ENVIRONMENT }} application is running via systemd!"
+              exit 0
+            fi
+          else
+            if pgrep -f "java.*spring.profiles.active=${{ env.SPRING_PROFILE }}" > /dev/null; then
+              echo "${{ env.ENVIRONMENT }} application is running!"
+              exit 0
+            fi
           fi
           echo "Waiting for application... ($i/12)"
           sleep 10
@@ -131,7 +130,7 @@ jobs:
         
         echo "Health check failed. Checking logs..."
         if [[ "${{ env.USE_DOCKER }}" == "true" ]]; then
-          tail -n 50 app-dev.log
+          sudo journalctl -u spring-app-dev --no-pager -n 50
         else
           tail -n 50 /var/log/app/application.log
         fi
