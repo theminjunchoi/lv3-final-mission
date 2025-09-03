@@ -1,0 +1,74 @@
+name: Deploy Spring Boot to Production EC2
+
+on:
+  push:
+    branches: [ prod ]
+
+jobs:
+  deploy:
+    runs-on: prod-server  # prod 전용 러너 라벨
+    
+    steps:
+    - name: Checkout prod branch
+      uses: actions/checkout@v4
+      with:
+        ref: prod
+    
+    - name: Setup Java JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Stop existing application
+      run: |
+        pkill -f "java.*spring.profiles.active=prod" || echo "No existing process found"
+        sleep 5
+    
+    - name: Start MySQL container
+      run: |
+        # Production용 Docker Compose 사용
+        docker-compose -f docker-compose-prod.yml down || true
+        docker-compose -f docker-compose-prod.yml up -d mysql
+        
+        echo "Waiting for MySQL to be ready..."
+        timeout 60 bash -c 'until docker-compose -f docker-compose-prod.yml exec -T mysql mysqladmin ping -h localhost --silent; do sleep 2; done'
+        echo "MySQL is ready!"
+    
+    - name: Build with Gradle
+      run: |
+        export GRADLE_OPTS="-Xmx512m -XX:MaxMetaspaceSize=256m"
+        ./gradlew clean build -x test --no-daemon --max-workers=1
+        echo "Build completed!"
+    
+    - name: Start application
+      run: |
+        export SPRING_PROFILES_ACTIVE=prod
+        export DB_HOST=localhost
+        export DB_PORT=3306
+        export DB_NAME=mj_prod
+        export DB_USER=admin
+        export DB_PASSWORD=prodpassword
+        export JWT_SECRET=SUPER-SECRET-PROD-JWT-KEY-CHANGE-THIS
+        export RANDOMMER_SECRET=your-prod-api-key
+        
+        JAR_FILE=$(find build/libs -name "*-SNAPSHOT.jar" ! -name "*-plain.jar" | head -1)
+        echo "Starting JAR: $JAR_FILE"
+        
+        nohup java -jar -Dspring.profiles.active=prod "$JAR_FILE" > app.log 2>&1 &
+        echo "Production application started in background"
+        sleep 15
+    
+    - name: Health check
+      run: |
+        sleep 10
+        if pgrep -f "java.*spring.profiles.active=prod" > /dev/null; then
+          echo "Production application is running!"
+        else
+          echo "Application failed to start. Checking logs..."
+          tail -n 50 app.log
+          exit 1
+        fi

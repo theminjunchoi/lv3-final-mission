@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:mj_prod}?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:prodpassword}
+    
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: false  # 운영에서는 SQL 로그 끄기
+    hibernate:
+      ddl-auto: validate  # 운영에서는 validate 모드
+    properties:
+      hibernate:
+        format_sql: false
+    defer-datasource-initialization: true
+
+  h2:
+    console:
+      enabled: false
+
+  sql:
+    init:
+      mode: never
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET:PROD-SECRET-KEY-CHANGE-THIS}
+      access:
+        expire-length: 3600000
+
+alias:
+  randommer:
+    base-url: https://randommer.io/api/
+    connection-timeout: 5000
+    read-timeout: 5000
+    secret-key: ${RANDOMMER_SECRET:your-prod-api-key}
+
+logging:
+  level:
+    root: WARN  # 운영에서는 WARN 레벨
+    nextstep: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+server:
+  port: 8080
