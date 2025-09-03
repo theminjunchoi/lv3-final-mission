@@ -1,0 +1,53 @@
+[Unit]
+Description=Spring Boot Application
+After=network.target
+
+[Service]
+Type=forking
+User=ubuntu
+Group=ubuntu
+
+# 환경변수는 /etc/systemd/system/app.service.d/override.conf에서 설정
+# 또는 EnvironmentFile 사용
+ExecStart=/usr/bin/java -jar -Dspring.profiles.active=prod -Xms512m -Xmx1024m /home/ubuntu/app.jar
+ExecStop=/bin/kill -TERM $MAINPID
+
+Restart=on-failure
+RestartSec=10
+KillMode=mixed
+KillSignal=SIGTERM
+SendSIGKILL=yes
+
+# 로그 설정
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=spring-app
+
+# 보안 설정
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/var/log/app
+ProtectHome=yes
+
+[Install]
+WantedBy=multi-user.target
+
+# 설치 방법:
+# 1. sudo cp app.service /etc/systemd/system/
+# 2. sudo systemctl daemon-reload
+# 3. sudo systemctl enable app
+# 4. sudo systemctl start app
+
+# 환경변수 설정:
+# sudo mkdir -p /etc/systemd/system/app.service.d/
+# sudo tee /etc/systemd/system/app.service.d/override.conf << EOF
+# [Service]
+# Environment="DB_HOST=your-rds-endpoint"
+# Environment="DB_PORT=3306"
+# Environment="DB_NAME=your-db"
+# Environment="DB_USER=admin"
+# Environment="DB_PASSWORD=your-password"
+# Environment="JWT_SECRET=your-jwt-secret"
+# Environment="RANDOMMER_SECRET=your-api-key"
+# EOF

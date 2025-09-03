@@ -1,48 +1,63 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT:3306}/${DB_NAME}?useSSL=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=true&requireSSL=false&serverTimezone=UTC
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
-      connection-timeout: 30000
-      idle-timeout: 600000
-      max-lifetime: 1800000
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+
+  sql:
+    init:
+      mode: never  # 운영에서는 init 스크립트 실행 안 함
 
   jpa:
-    show-sql: false
+    show-sql: false  # 운영에서는 SQL 로그 끔
     hibernate:
-      ddl-auto: validate
+      ddl-auto: validate  # 테이블 구조 검증만 함
     properties:
       hibernate:
         format_sql: false
         dialect: org.hibernate.dialect.MySQLDialect
     defer-datasource-initialization: false
 
-  sql:
-    init:
-      mode: never
+  h2:
+    console:
+      enabled: false  # 운영에서는 H2 콘솔 끔
+
+logging:
+  level:
+    com.zaxxer.hikari: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+    nextstep: INFO
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /var/log/app/application.log
+    max-size: 100MB
+    max-history: 30
 
 security:
   jwt:
     token:
-      secret-key: ${JWT_SECRET}
+      secret-key: ${JWT_SECRET}  # 환경변수로 받음
       access:
-        expire-length: ${JWT_EXPIRE:3600000}
+        expire-length: 3600000  # 1시간 (운영에서는 더 짧게)
 
 alias:
   randommer:
     base-url: https://randommer.io/api/
     connection-timeout: 5000
     read-timeout: 10000
-    secret-key: ${RANDOMMER_SECRET}
+    secret-key: ${RANDOMMER_SECRET}  # 환경변수로 받음
 
-logging:
-  level:
-    org.springframework.web: WARN
-    mj: INFO
-    org.springframework.security: WARN
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+server:
+  port: 8080
+  compression:
+    enabled: true
+  forward-headers-strategy: framework

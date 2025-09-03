@@ -1,21 +1,11 @@
+# 운영환경에서는 RDS를 사용하므로 이 파일은 사용하지 않음
+# 개발환경용 docker-compose.yml만 사용
+
+# RDS 연결 정보:
+# - Endpoint: GitHub Secrets의 DB_HOST 사용
+# - Port: 3306
+# - Database: GitHub Secrets의 DB_NAME 사용
+# - Username/Password: GitHub Secrets에서 관리
+
 version: '3.8'
-
-services:
-  mysql:
-    image: mysql:8.0
-    container_name: mj-prod-mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: prodrootpassword
-      MYSQL_DATABASE: mj_prod
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: prodpassword
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_prod_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    command: --default-authentication-plugin=mysql_native_password
-
-volumes:
-  mysql_prod_data:
+# 운영환경에서는 사용하지 않음 - RDS로 대체됨

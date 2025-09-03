@@ -35,3 +35,19 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Application ###
+*.log
+logs/
+app.log
+nohup.out
+*.pid
+
+### Environment ###
+.env
+.env.local
+.env.prod
+
+### OS ###
+.DS_Store
+Thumbs.db
