@@ -43,10 +43,37 @@ jobs:
     - name: Start MySQL container (dev only)
       if: env.USE_DOCKER == 'true'
       run: |
-        docker compose down || docker-compose down || true
-        docker compose up -d mysql || docker-compose up -d mysql
-        echo "Waiting for MySQL to be ready..."
-        timeout 60 bash -c 'until (docker compose exec -T mysql mysqladmin ping -h localhost --silent || docker-compose exec -T mysql mysqladmin ping -h localhost --silent); do sleep 2; done'
+        # PATH에 docker-compose 추가
+        export PATH=$PATH:/usr/local/bin:/usr/bin
+        
+        # Docker Compose 위치 찾기
+        DOCKER_COMPOSE=""
+        if [ -f /usr/local/bin/docker-compose ]; then
+          DOCKER_COMPOSE="/usr/local/bin/docker-compose"
+        elif [ -f /usr/bin/docker-compose ]; then
+          DOCKER_COMPOSE="/usr/bin/docker-compose"
+        elif command -v docker-compose >/dev/null; then
+          DOCKER_COMPOSE="docker-compose"
+        elif docker compose version >/dev/null 2>&1; then
+          DOCKER_COMPOSE="docker compose"
+        else
+          echo "Docker Compose not found"
+          exit 1
+        fi
+        
+        echo "Using Docker Compose: $DOCKER_COMPOSE"
+        
+        # MySQL 컨테이너 시작
+        if [[ "$DOCKER_COMPOSE" == "docker compose" ]]; then
+          docker compose down || true
+          docker compose up -d mysql
+          timeout 60 bash -c 'until docker compose exec -T mysql mysqladmin ping -h localhost --silent; do sleep 2; done'
+        else
+          $DOCKER_COMPOSE down || true
+          $DOCKER_COMPOSE up -d mysql
+          timeout 60 bash -c "until $DOCKER_COMPOSE exec -T mysql mysqladmin ping -h localhost --silent; do sleep 2; done"
+        fi
+        
         echo "MySQL is ready!"
     
     - name: Create log directory (prod only)
