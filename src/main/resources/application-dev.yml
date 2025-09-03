@@ -28,7 +28,7 @@ security:
     token:
       secret-key: ${JWT_SECRET:WX1GYj5fM0dAWiE7PUE5JlV1UExyRTcqNF5xS35YVHNkUUp2TmZoY01Cb0lXMitMeCNDbjh5VnowSHdSdCVn}
       access:
-        expire-length: 3600000  # 1시간
+        expire-length: 3600000
 
 alias:
   randommer:

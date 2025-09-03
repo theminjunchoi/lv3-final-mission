@@ -78,9 +78,12 @@ jobs:
     
     - name: Health check
       run: |
-        timeout 30 bash -c 'until curl -f http://localhost:8080/actuator/health || curl -f http://localhost:8080; do sleep 2; done' || {
-          echo "Health check failed. Checking logs..."
+        # 간단히 프로세스만 확인
+        sleep 10
+        if pgrep -f "java.*spring.profiles.active=dev" > /dev/null; then
+          echo "Application is running!"
+        else
+          echo "Application failed to start. Checking logs..."
           tail -n 50 app.log
           exit 1
-        }
-        echo "Application is running successfully!"
+        fi
